@@ -432,3 +432,5 @@ html,body{overflow-x:clip}
 .krok:last-child{min-height:30vh}
 .droga{padding-top:clamp(30px,4vw,60px);height:clamp(230px,28vw,400px)}
 .hero-tlo span{-webkit-text-stroke-color:rgba(242,241,237,.2)}
+
+.wl-odz-t{margin-top:18px;font-size:15px;line-height:1.6;opacity:.75;max-width:46ch}

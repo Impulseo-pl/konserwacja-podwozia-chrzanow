@@ -170,7 +170,7 @@ def head(p, title, desc, path, intro=False):
 
 def header(p, home=False):
     h = '' if home else p
-    nav = [('Usługi', h + '#uslugi'), ('Realizacje', p + 'realizacje/'), ('Jak pracuję', h + '#proces'), ('Wycena', h + '#wycena'), ('Pytania', h + '#faq'), ('Kontakt', p + 'kontakt/')]
+    nav = [('Start', p or './'), ('Usługi', p + 'uslugi/'), ('Realizacje', p + 'realizacje/'), ('Wycena', p + 'wycena/'), ('Kontakt', p + 'kontakt/')]
     links = ''.join(f'<a href="{u}">{t}</a>' for t, u in nav)
     return f'''<div class="kurtyna" aria-hidden="true"></div>
 <div class="intro" aria-hidden="true"><div class="intro-in">{LOGO}<div class="intro-name"><span class="lt">Auto</span><span class="bd">Konserwacja</span></div><div class="intro-line"><i></i></div></div></div>
@@ -180,7 +180,7 @@ def header(p, home=False):
     <a class="logo" href="{p}" aria-label="Auto Konserwacja – strona główna">{LOGO}<span><b>AUTO KONSERWACJA</b><small>Witold Poznański</small></span></a>
     <nav class="menu" aria-label="Główne">{links}</nav>
     <a class="top-tel" href="tel:{TELH}">{TELI}<span>+48 {TEL}</span></a>
-    <a class="btn btn-r btn-sm" href="{h}#wycena">Zamów wycenę</a>
+    <a class="btn btn-r btn-sm" href="{p}wycena/">Zamów wycenę</a>
     <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
   </div>
 </header>
@@ -194,8 +194,8 @@ def footer(p):
       <p>Zakład Profesjonalnej Konserwacji Samochodowej oraz Zawieszenia i jego Podzespołów. Członek Polskiego Stowarzyszenia Korozyjnego i Europejskiej Federacji Korozyjnej.</p>
       <p class="st-k">{PIN}{ADR1}, {ADR2}</p><p class="st-k">{TELI}<a href="tel:{TELH}">+48 {TEL}</a></p>
     </div>
-    <div><p class="st-h">Usługi</p><a href="{p}#uslugi">Konserwacja podwozia</a><a href="{p}#uslugi">Profile zamknięte i progi</a><a href="{p}#uslugi">Zawieszenie i podzespoły</a><a href="{p}#uslugi">Piaskowanie</a><a href="{p}#uslugi">Busy, pickupy, quady</a></div>
-    <div><p class="st-h">Zakład</p><a href="{p}realizacje/">Realizacje</a><a href="{p}#proces">Jak pracuję</a><a href="{p}#wycena">Wycena</a><a href="{p}#faq">Pytania</a><a href="{p}kontakt/">Kontakt i dojazd</a></div>
+    <div><p class="st-h">Usługi</p><a href="{p}uslugi/">Konserwacja podwozia</a><a href="{p}uslugi/">Profile zamknięte i progi</a><a href="{p}uslugi/">Zawieszenie i podzespoły</a><a href="{p}uslugi/#proces">Jak pracuję</a><a href="{p}uslugi/#porownanie">Czym to się różni</a></div>
+    <div><p class="st-h">Zakład</p><a href="{p}">Strona główna</a><a href="{p}realizacje/">Realizacje</a><a href="{p}wycena/">Wycena</a><a href="{p}wycena/#faq">Pytania</a><a href="{p}kontakt/">Kontakt i dojazd</a></div>
     <div><p class="st-h">Obszar</p><p class="muted">Chrzanów, Libiąż, Trzebinia, Jaworzno, Oświęcim, Alwernia, Kraków i okolice.</p></div>
   </div>
   <div class="wrap st-dol"><span>© 2026 Zakład Konserwacji Samochodowej · Faktura VAT · Rzetelna Firma</span><span>Zdjęcia własne, z Zakładu · Projekt: Impulseo</span></div>
@@ -210,30 +210,28 @@ def footer(p):
 def hero(p):
     return f'''<section class="hero">
   <div class="hero-bg" data-par>{img(p, 'podwozie-2', 'Podwozie po konserwacji w Zakładzie w Chrzanowie', '100vw', lazy=False)}</div>
-  <div class="hero-tlo" aria-hidden="true"><span data-tlo>NA HALI · NIE NA KANALE · NA HALI · NIE NA KANALE · </span></div>
   <div class="wrap hero-in">
     <p class="eyebrow">Konserwacja podwozia · Chrzanów i okolice</p>
     {H('Podwozie zabezpieczone', 'na kolejne lata.', 'h1', 'h1')}
     <p class="hero-lead">Nowe auta z salonu, używane i starsze. Konserwacja na hali, środkami z 15-letnim okresem ochrony – a na czas usługi dostajesz bezpłatnie auto zastępcze.</p>
-    <div class="hero-cta"><a class="btn btn-r" href="#wycena">Zamów wycenę {ARR}</a><a class="btn btn-gh" href="tel:{TELH}">{TELI}Zadzwoń</a></div>
+    <div class="hero-cta"><a class="btn btn-r" href="{p}wycena/">Zamów wycenę {ARR}</a><a class="btn btn-gh" href="tel:{TELH}">{TELI}Zadzwoń</a></div>
   </div>
-  <a class="hero-strz" href="#liczby" aria-label="Przewiń w dół">{DOWN}</a>
-</section>
-<section class="liczby" id="liczby"><div class="wrap liczby-in">
-  <div class="lic"><b><span data-cnt="15">15</span><small> lat</small></b><span>okres ochrony środków, które stosuję</span></div>
-  <div class="lic"><b><span data-cnt="6" data-od="5">5–6</span><small>×</small></b><span>tyle razy nakładam środek pistoletem</span></div>
-  <div class="lic"><b><span data-cnt="4" data-od="3">3–4</span><small> dni</small></b><span>trwa usługa – bez tygodnia w kolejce</span></div>
-  <div class="lic"><b><span data-cnt="0">0</span><small> zł</small></b><span>za auto zastępcze na czas usługi</span></div>
-</div></section>'''
+  <a class="hero-strz" href="#uslugi" aria-label="Przewiń w dół">{DOWN}</a>
+</section>'''
 
-def uslugi(p):
+def uslugi(p, skrot=False):
+    cel = p + ('uslugi/' if skrot else 'wycena/')
     def card(n, t, d, k):
-        return f'<a class="usl usl-{k} rv" href="#wycena">{img(p, n, t, "(max-width: 900px) 100vw, 34vw")}<span class="usl-tx"><b>{t}</b><span>{d}</span><span class="usl-c">Cena z materiałem, na gotowo<i>{GO}</i></span></span></a>'
+        return f'<a class="usl usl-{k} rv" href="{cel}">{img(p, n, t, "(max-width: 900px) 100vw, 34vw")}<span class="usl-tx"><b>{t}</b><span>{d}</span></span></a>'
     big = ''.join(card(*u) for u in USLUGI if u[3] == 'big')
+    if skrot:
+        return f'''<section class="sek" id="uslugi"><div class="wrap">
+  <div class="sh sh-row"><div>{H('Co zrobię', 'z Twoim autem')}<p class="lead">Najpierw oglądam podwozie na podnośniku, potem mówię, co trzeba zrobić. Bez dopisywania usług, których auto nie potrzebuje.</p></div><a class="btn btn-gh btn-sm" href="{cel}">Wszystkie usługi {ARR}</a></div>
+  <div class="usl-3">{big}</div>
+</div></section>'''
     mid = ''.join(card(*u) for u in USLUGI if u[3] == 'mid')
-    rows = ''.join(f'<a class="usl-row rv" href="#wycena"><b>{t}</b><span>{d}</span><i>{GO}</i></a>' for t, d in WIERSZE)
+    rows = ''.join(f'<a class="usl-row rv" href="{cel}"><b>{t}</b><span>{d}</span><i>{GO}</i></a>' for t, d in WIERSZE)
     return f'''<section class="sek" id="uslugi"><div class="wrap">
-  <div class="sh">{H('Co zrobię', 'z Twoim autem')}<p class="lead">Najpierw oglądam podwozie na podnośniku, potem mówię, co trzeba zrobić. Bez dopisywania usług, których auto nie potrzebuje.</p></div>
   <div class="usl-3">{big}</div><div class="usl-2">{mid}</div><div class="usl-rows">{rows}</div>
 </div></section>'''
 
@@ -256,7 +254,7 @@ def przedpo(p):
       <h3>Konserwacja podwozia</h3>
       <div class="pp-st"><div><small>Warstwy środka</small><b>5–6×</b></div><div><small>Czas usługi</small><b>3–4 dni</b></div></div>
       <p>Mycie, odtłuszczacz, odrdzewiacz, bloker rdzy, inhibitor korozji, środek konserwujący i wosk. Zdjęcia przed i po dostajesz na telefon.</p>
-      <a class="link-r" href="#wycena">Chcę taki efekt {ARR}</a>
+      <a class="link-r" href="{p}wycena/">Chcę taki efekt {ARR}</a>
       <p class="muted small">Zdjęcia poglądowe – dwa różne auta z Zakładu.</p>
     </div>
   </div>
@@ -265,9 +263,8 @@ def przedpo(p):
 def realizacje_karuzela(p):
     cards = ''
     for n, kat, t, tagi, d in REALIZACJE:
-        tg = ''.join(f'<span>{x}</span>' for x in tagi)
-        cards += f'''<article class="rk">{img(p, n, t, "(max-width: 900px) 80vw, 24vw")}<div class="rk-tx"><small>{kat}</small><h3>{t}</h3><div class="rk-tagi">{tg}</div><p>{d}</p>
-<a class="link-r" href="#wycena">Chcę podobny efekt {ARR}</a></div></article>'''
+        cards += f'''<article class="rk">{img(p, n, t, "(max-width: 900px) 80vw, 24vw")}<div class="rk-tx"><small>{kat}</small><h3>{t}</h3><p>{d}</p>
+<a class="link-r" href="{p}wycena/">Chcę podobny efekt {ARR}</a></div></article>'''
     return f'''<section class="sek sek-rk"><div class="wrap">
   <div class="sh sh-row"><div>{H('Moja praca,', 'nie zdjęcia z internetu')}</div><a class="btn btn-gh btn-sm" href="{p}realizacje/">Wszystkie realizacje {ARR}</a></div></div>
   <div class="rk-tor" data-tor>{cards}</div>
@@ -278,13 +275,13 @@ def droga(t1, t2):
     """Napis położony na drodze w perspektywie, prostuje się przy przewijaniu (jak 'NASZA OFERTA' u Bryk)."""
     return f'<div class="droga" aria-hidden="true"><div class="droga-in" data-droga><span>{t1}</span><span>{t2}</span></div></div>'
 
-def wycena():
+def wycena(tag='h2'):
     typy = ''.join(f'<label class="opt opt-t"><input type="radio" name="typ" value="{k}"{" checked" if i == 0 else ""}><span class="opt-in">{IKONY[k]}<b>{t}</b><small>{d}</small></span></label>' for i, (k, t, d) in enumerate(TYPY))
     wiel = ''.join(f'<label class="opt opt-w"><input type="radio" name="wiel" value="{k}"{" checked" if i == 1 else ""}><span class="opt-in"><b>{t}</b><small>{d}</small></span></label>' for i, (k, t, d) in enumerate(WIELKOSC))
     zak = ''.join(f'<label class="opt opt-z"><input type="checkbox" name="zakres" value="{k}"{" checked" if c else ""}><span class="opt-in"><i class="box">{CHK}</i><span><b>{t}</b><small>{d}</small></span><em>{"w cenie" if k not in ("piaskowanie",) else "gdy trzeba"}</em></span></label>' for k, t, d, c in ZAKRES)
     co = json.dumps(CO_TYP, ensure_ascii=False)
     return f'''<section class="sek sek-wyc" id="wycena"><div class="wrap">
-  <div class="sh">{H('Wycena', 'w 60 sekund')}<p class="lead">Wybierz rodzaj auta, wielkość i zakres. Oddzwonię z ceną z materiałem – na gotowo, bez dopłat.</p></div>
+  <div class="sh">{H('Wycena', 'w 60 sekund', tag, 'h1 h1-pod' if tag == 'h1' else 'h2')}<p class="lead">Wybierz rodzaj auta, wielkość i zakres. Oddzwonię z ceną z materiałem – na gotowo, bez dopłat.</p></div>
   <form class="wyc" data-mail="{MAIL}" novalidate>
     <div class="wyc-l">
       <fieldset><legend><i>1</i>Jakie masz auto?</legend><div class="opts-t">{typy}</div></fieldset>
@@ -344,7 +341,7 @@ def proces():
 
 def porownanie():
     rows = ''.join(f'<tr><th scope="row">{a}</th><td>{b}</td><td>{c}</td></tr>' for a, b, c in POROWNANIE)
-    return f'''<section class="sek sek-jasna"><div class="wrap">
+    return f'''<section class="sek sek-jasna" id="porownanie"><div class="wrap">
   <div class="sh">{H('Czym to się różni', 'od bitexu na kanale?')}</div>
   <div class="tab-wrap rv"><table class="tabela"><thead><tr><th></th><th>Typowa „konserwacja”</th><th>W moim Zakładzie</th></tr></thead><tbody>{rows}</tbody></table></div>
 </div></section>'''
@@ -356,7 +353,7 @@ def wlasciciel(p):
     <p>Nie robię na kanale ani na trawie, jak większość – tak nie da się tego zrobić fachowo. Pracuję na hali, na podnośnikach, środkami do użytku profesjonalnego, według karty technicznej producenta.</p>
     <p>Pokazuję klientowi, czym myję i konserwuję, jakim pistoletem i narzędziami pracuję. Po robocie każdy dostaje na telefon zdjęcia podwozia przed i po.</p>
     <p class="wl-podpis">Witold Poznański</p>
-    <ul class="wl-odz"><li>Polskie Stowarzyszenie Korozyjne</li><li>Europejska Federacja Korozyjna</li><li>Rzetelna Firma</li></ul>
+    <p class="wl-odz-t">Członek Polskiego Stowarzyszenia Korozyjnego i Europejskiej Federacji Korozyjnej. Firma z certyfikatem Rzetelna Firma.</p>
   </div>
 </div></section>'''
 
@@ -374,7 +371,7 @@ def kontakt(p, pelna=False):
     return f'''<section class="sek sek-kon" id="kontakt"><div class="wrap">
   <div class="kon-karta">
     <div class="kon-l">
-      {H('Zostaw numer.', 'Resztą zajmę się ja.', tag, 'h2')}
+      {H('Zostaw numer.', 'Resztą zajmę się&nbsp;ja.', tag, 'h2')}
       <p class="lead">Oddzwonię z ceną i najbliższym wolnym terminem. Ze względu na specyfikę pracy najlepiej po prostu zadzwoń.</p>
       <a class="kon-tel" href="tel:{TELH}">{TEL}</a>
       <div class="kon-dane"><p>{PIN}<span>{ADR1}, {ADR2}<br>Chrzanów-Kąty, od strony Libiąża</span></p><p>{SMS}<span><a href="mailto:{MAIL}">{MAIL}</a><br>Faktura VAT</span></p></div>
@@ -389,7 +386,7 @@ LEAFLET = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/lea
 
 def home():
     p = ''
-    body = hero(p) + uslugi(p) + ribbon() + przedpo(p) + realizacje_karuzela(p) + wycena() + gwarancje() + proces() + porownanie() + wlasciciel(p) + faq() + kontakt(p)
+    body = hero(p) + uslugi(p, skrot=True) + przedpo(p) + realizacje_karuzela(p) + gwarancje() + wlasciciel(p) + kontakt(p)
     return head(p, 'Konserwacja podwozia Chrzanów – Zakład Konserwacji Samochodowej, Witold Poznański',
                 'Konserwacja podwozia w Chrzanowie: nowe, używane i starsze auta, na hali, środkami z 15-letnim okresem ochrony. Auto zastępcze gratis, zdjęcia przed i po. Tel. 501 199 501.', '', intro=True) \
         + header(p, True) + '<main>' + body + '</main>' + LEAFLET + footer(p)
@@ -406,9 +403,22 @@ def realizacje():
     return head(p, 'Realizacje – konserwacja podwozia Chrzanów | Auto Konserwacja', 'Zdjęcia podwozi po konserwacji i hali Zakładu Konserwacji Samochodowej w Chrzanowie.', 'realizacje/') \
         + header(p) + '<main class="pod">' + body + '</main>' + LEAFLET + footer(p)
 
+def uslugi_str():
+    p = '../'
+    body = (f'<section class="pod-hero"><div class="wrap">{H("Usługi", "i sposób pracy", "h1", "h1 h1-pod")}<p class="lead">Najpierw oglądam podwozie na podnośniku, potem mówię, co trzeba zrobić. Cenę podaję z materiałem, na gotowo – bez dopłat za zawieszenie czy przewody.</p></div></section>'
+            + uslugi(p) + gwarancje() + proces() + porownanie() + kontakt(p))
+    return head(p, 'Usługi – konserwacja podwozia, profili i zawieszenia Chrzanów | Auto Konserwacja', 'Konserwacja podwozia, profili zamkniętych, progów i zawieszenia w Chrzanowie. Siedem etapów, na hali, 5–6 warstw środka. Auto zastępcze gratis.', 'uslugi/') \
+        + header(p) + '<main class="pod">' + body + '</main>' + LEAFLET + footer(p)
+
+def wycena_str():
+    p = '../'
+    body = wycena('h1') + faq()
+    return head(p, 'Wycena konserwacji podwozia – Chrzanów | Auto Konserwacja', 'Wybierz auto i zakres – oddzwonię z ceną konserwacji podwozia z materiałem, na gotowo. Tel. 501 199 501.', 'wycena/') \
+        + header(p) + '<main class="pod">' + body + '</main>' + footer(p)
+
 def kontakt_str():
     p = '../'
-    body = f'<section class="pod-hero"><div class="wrap">{H("Kontakt", "i dojazd", "h1", "h1 h1-pod")}<p class="lead">Zakład jest w Chrzanowie, od strony Libiąża – blisko z Trzebini, Jaworzna i Oświęcimia.</p></div></section>' + kontakt(p) + faq()
+    body = f'<section class="pod-hero"><div class="wrap">{H("Kontakt", "i dojazd", "h1", "h1 h1-pod")}<p class="lead">Zakład jest w Chrzanowie, od strony Libiąża – blisko z Trzebini, Jaworzna i Oświęcimia.</p></div></section>' + kontakt(p)
     return head(p, 'Kontakt i dojazd – konserwacja podwozia Chrzanów | Auto Konserwacja', 'Zakład Konserwacji Samochodowej, ul. Leśna 1a, Chrzanów (od strony Libiąża). Tel. 501 199 501. Auto zastępcze gratis.', 'kontakt/') \
         + header(p) + '<main class="pod">' + body + '</main>' + LEAFLET + footer(p)
 
@@ -416,8 +426,8 @@ def w(path, s):
     f = os.path.join(ROOT, path); os.makedirs(os.path.dirname(f), exist_ok=True)
     open(f, 'w', encoding='utf-8', newline='\n').write(s)
 
-w('index.html', home()); w('realizacje/index.html', realizacje()); w('kontakt/index.html', kontakt_str())
+w('index.html', home()); w('realizacje/index.html', realizacje()); w('uslugi/index.html', uslugi_str()); w('wycena/index.html', wycena_str()); w('kontakt/index.html', kontakt_str())
 w('favicon.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="7" fill="#0a1433"/><rect x="8" y="12" width="24" height="3.4" rx="1" fill="#e03e39" opacity=".45"/><rect x="8" y="17.6" width="24" height="3.4" rx="1" fill="#e03e39" opacity=".7"/><rect x="8" y="23.2" width="24" height="3.4" rx="1" fill="#e03e39"/><rect x="8" y="28.8" width="24" height="3.4" rx="1" fill="#f2f1ed"/></svg>')
 w('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n')
-w('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{BASE}{u}</loc></url>' for u in ['', 'realizacje/', 'kontakt/']) + '</urlset>\n')
+w('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{BASE}{u}</loc></url>' for u in ['', 'uslugi/', 'realizacje/', 'wycena/', 'kontakt/']) + '</urlset>\n')
 print('ok')
